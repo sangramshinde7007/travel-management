@@ -1,0 +1,45 @@
+{
+    "rules": {
+        "travel_management": {
+            ".read": "auth != null",
+            ".write": "auth != null",
+            "users": {
+                "$uid": {
+                    ".read": "auth != null && auth.uid == $uid",
+                    ".write": "auth != null && (auth.uid == $uid || root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin')"
+                }
+            },
+            "vehicles": {
+                ".read": "auth != null",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'"
+            },
+            "drivers": {
+                ".read": "auth != null",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'"
+            },
+            "customers": {
+                ".read": "auth != null",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'"
+            },
+            "trips": {
+                ".read": "auth != null",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'",
+                "$tripId": {
+                    ".read": "auth != null && (root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin' || data.child('driverId').val() == auth.uid)"
+                }
+            },
+            "expenses": {
+                ".read": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'"
+            },
+            "invoices": {
+                ".read": "auth != null",
+                ".write": "auth != null && root.child('travel_management').child('users').child(auth.uid).child('role').val() == 'admin'"
+            },
+            "attendance": {
+                ".read": "auth != null",
+                ".write": "auth != null"
+            }
+        }
+    }
+}
